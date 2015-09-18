@@ -22,6 +22,17 @@ app.get('/', function(req, res) {
 })
 
 io.on('connection', function(socket) {
-  console.log('a user is connected');
+  socket.broadcast.emit('chat message', 'User has connected');
+  socket.emit('chat message', 'Welcome to the chatroom!');
+
+  socket.on('chat message', function(msg) {
+    //io.emit broadcasts to everyone
+    //to send a msg to everyone except certain socket use socket.broadcast.emit()
+    io.emit('chat message', msg);
+  });
+
+  socket.on('disconnect', function() {
+    socket.broadcast.emit('chat message', 'User has disconnected');
+  });
 });
 
