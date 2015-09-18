@@ -13,11 +13,17 @@ $(document).ready(function() {
   });
 
   $('.chat').submit(function() {
+
     //send the chat message - note it hasn't been written as json - it formats that itself?
     socket.emit('chat message', [$('#m').val(), username]);
     $('#m').val('');
     return false;
   });
+
+  $('#m').one('keypress',function() {
+    socket.emit('typing', username);
+  });
+
   socket.on('chat message', function(msg) {
     $('#messages').append($('<li>').text(msg));
   });
