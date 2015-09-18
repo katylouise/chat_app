@@ -8,6 +8,7 @@ var http = require('http').Server(app);
 //initialize a new instance of socket.io, passing it the HTTP server
 //there is also a client library socket.io-client which loads on the browser side
 var io = require('socket.io')(http);
+var username;
 
 //set public as static files directory
 app.use(express.static('public'));
@@ -22,13 +23,17 @@ app.get('/', function(req, res) {
 })
 
 io.on('connection', function(socket) {
-  socket.broadcast.emit('chat message', 'User has connected');
-  socket.emit('chat message', 'Welcome to the chatroom!');
+  socket.on('username', function(name) {
+    username = name;
+    socket.broadcast.emit('chat message', name + ' has connected');
+    socket.emit('chat message', 'Welcome to the chatroom ' + name + '!');
+  });
 
-  socket.on('chat message', function(msg) {
+
+  socket.on('chat message', function(data) {
     //io.emit broadcasts to everyone
     //to send a msg to everyone except certain socket use socket.broadcast.emit()
-    io.emit('chat message', msg);
+    io.emit('chat message', data[1] + ': ' + data[0]);
   });
 
   socket.on('disconnect', function() {

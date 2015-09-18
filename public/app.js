@@ -9,12 +9,12 @@ $(document).ready(function() {
     $('.welcome').hide();
     $('.chatbox').show();
     username = $('.name').val();
-    console.log(username);
+    socket.emit('username', $('.name').val());
   });
 
   $('.chat').submit(function() {
     //send the chat message - note it hasn't been written as json - it formats that itself?
-    socket.emit('chat message', $('#m').val());
+    socket.emit('chat message', [$('#m').val(), username]);
     $('#m').val('');
     return false;
   });
