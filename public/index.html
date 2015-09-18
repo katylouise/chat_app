@@ -9,9 +9,17 @@
     <script type="text/javascript" src="/app.js"></script>
   </head>
   <body>
-    <ul id="messages"></ul>
-    <form action="/">
-      <input id="m" autocomplete="off" /><button>Send</button>
+  <div class="welcome">
+    <form>
+      <input class="name" type="text" placeholder="Your name">
+      <input class="start" type="submit" value="Chat!">
     </form>
+  </div>
+  <div class="chatbox">
+    <ul id="messages"></ul>
+    <form class="chat">
+      <input id="m" autocomplete="off"><button>Send</button>
+    </form>
+  </div>
   </body>
 </html>
