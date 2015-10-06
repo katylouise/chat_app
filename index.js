@@ -1,19 +1,12 @@
-//initializes app to be a function handler
 var express = require('express');
-var app = express()
-
-//pass app to HTTP server
+var app = express();
 var http = require('http').Server(app);
-
-//initialize a new instance of socket.io, passing it the HTTP server
-//there is also a client library socket.io-client which loads on the browser side
 var io = require('socket.io')(http);
 var usernames = [];
 var username;
-//set public as static files directory
+
 app.use(express.static('public'));
 
-//tell server to listen on port 3000
 http.listen(3000, function() {
   console.log('listening on *:3000');
 });
@@ -21,9 +14,6 @@ http.listen(3000, function() {
 app.get('/', function(req, res) {
   res.sendFile('/index.html');
 })
-
-//io.emit broadcasts to everyone
-//to send a msg to everyone except certain socket use socket.broadcast.emit()
 
 io.on('connection', function(socket) {
   socket.on('username', function(name) {
@@ -53,4 +43,3 @@ io.on('connection', function(socket) {
     socket.broadcast.emit('chat message', username + ' has left the room');
   });
 });
-
